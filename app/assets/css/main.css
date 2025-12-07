@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+  --ui-bg: #486333;
+  --ui-bg-soft: oklch(98.4% 0.003 247.858);
+  --ui-border: #3e3d3d;
+  --ui-text: oklch(98.5% 0.001 106.423);
+}
