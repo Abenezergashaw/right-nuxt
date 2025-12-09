@@ -44,8 +44,8 @@ async function submitForm() {
   form.phone = phone;
 
   const ok = await auth.submitLogin(form);
+  alert(ok);
   if (!ok) return;
-
   router.push("/home/upcoming");
 }
 
