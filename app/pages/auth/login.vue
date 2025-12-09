@@ -112,9 +112,11 @@ onMounted(() => {
     </form>
 
     <div class="text-xs text-center my-4 tracking-wider">
-      <span class="text-[#05DF72] cursor-pointer">{{
-        t("Restore password")
-      }}</span>
+      <RouterLink
+        to="/restore_password"
+        class="text-[#05DF72] cursor-pointer"
+        >{{ t("Restore password") }}</RouterLink
+      >
       {{ t("or") }}
       <span class="text-[#05DF72] cursor-pointer">{{ t("Contact us") }}</span>
     </div>
