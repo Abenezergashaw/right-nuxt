@@ -8,6 +8,8 @@ const auth = useAuthStore();
 const url = useUrl().url;
 
 const id = computed(() => auth.user.id);
+const isLoggedIn = computed(() => auth.loggedIn);
+
 const phone = computed(() => {
   return "+251" + auth.user.phone;
 });
@@ -35,6 +37,11 @@ async function handleChangePassword() {
   responseState.value = res.data.error;
   responseMessage.value = res.data.message;
 }
+onMounted(() => {
+  if (isLoggedIn.value) {
+    router.push("/home/upcoming");
+  }
+});
 </script>
 
 <template>

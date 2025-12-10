@@ -48,6 +48,7 @@ async function getUpcomingEvents(filter = "All") {
   const res = await axios.post(`${url}/api/upcomingEvents`, { start, end });
 
   if (!res.data.error) {
+    console.log("FInsihed loading upcoming events");
     gameData.value =
       res.data?.[0]?.data?.mainEventList?.[0]?.competitions ?? [];
     loader.value = false;
@@ -63,8 +64,8 @@ async function manageSelectedBet(bet) {
   ticket.manageSelectedBet(bet);
 }
 
-onMounted(() => {
-  getUpcomingEvents("All");
+onMounted(async () => {
+  await getUpcomingEvents("All");
 });
 </script>
 
