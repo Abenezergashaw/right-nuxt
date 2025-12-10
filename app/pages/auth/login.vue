@@ -28,16 +28,22 @@ async function submitForm() {
 
   if (phone.length !== 9) {
     auth.loginError = "Invalid phone number";
+    loggingIn.value = false;
+
     return;
   }
 
   if (!phone.startsWith("7") && !phone.startsWith("9")) {
     auth.loginError = "Invalid phone number";
+    loggingIn.value = false;
+
     return;
   }
 
   if (!form.password || form.password.length < 8) {
     auth.loginError = "Password must be at least 8 characters.";
+    loggingIn.value = false;
+
     return;
   }
 

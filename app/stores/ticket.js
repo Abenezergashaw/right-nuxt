@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
+import { onMounted } from "vue";
 
 export const useTicket = defineStore("ticket", {
   state: () => ({
     ticket: [],
+    isLoaded: false,
   }),
 
   getters: {
@@ -115,18 +117,71 @@ export const useTicket = defineStore("ticket", {
       return 1;
     },
   },
+  // actions: {
+  //   manageSelectedBet(bet) {
+  //     const ref = bet.reference_id;
+
+  //     const exactIndex = this.ticket.findIndex((b) => b.reference_id === ref);
+  //     if (exactIndex !== -1) {
+  //       this.ticket.splice(exactIndex, 1);
+  //       return;
+  //     }
+
+  //     const prefix = ref.split("-")[0];
+
+  //     const prefixIndex = this.ticket.findIndex((b) =>
+  //       b.reference_id.startsWith(prefix)
+  //     );
+
+  //     if (prefixIndex !== -1) {
+  //       this.ticket[prefixIndex] = bet;
+  //     } else {
+  //       this.ticket.push(bet);
+  //     }
+  //   },
+
+  //   clearBets() {
+  //     const general = useGeneral();
+  //     this.ticket = [];
+  //     general.setStake(10);
+  //   },
+
+  //   removeBet(index) {
+  //     const general = useGeneral();
+  //     this.ticket.splice(index, 1);
+  //     if (this.ticket.length === 0) {
+  //       general.setStake(10);
+  //     }
+  //   },
+  // },
   actions: {
+    loadFromStorage() {
+      if (process.client) {
+        const saved = localStorage.getItem("ticket");
+        if (saved) {
+          this.ticket = JSON.parse(saved);
+        }
+        this.isLoaded = true;
+      }
+    },
+
+    saveToStorage() {
+      if (process.client) {
+        localStorage.setItem("ticket", JSON.stringify(this.ticket));
+      }
+    },
+
     manageSelectedBet(bet) {
       const ref = bet.reference_id;
 
       const exactIndex = this.ticket.findIndex((b) => b.reference_id === ref);
       if (exactIndex !== -1) {
         this.ticket.splice(exactIndex, 1);
+        this.saveToStorage();
         return;
       }
 
       const prefix = ref.split("-")[0];
-
       const prefixIndex = this.ticket.findIndex((b) =>
         b.reference_id.startsWith(prefix)
       );
@@ -136,17 +191,22 @@ export const useTicket = defineStore("ticket", {
       } else {
         this.ticket.push(bet);
       }
+
+      this.saveToStorage();
     },
 
     clearBets() {
       const general = useGeneral();
       this.ticket = [];
+      this.saveToStorage();
       general.setStake(10);
     },
 
     removeBet(index) {
       const general = useGeneral();
       this.ticket.splice(index, 1);
+      this.saveToStorage();
+
       if (this.ticket.length === 0) {
         general.setStake(10);
       }
