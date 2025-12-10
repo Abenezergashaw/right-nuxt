@@ -19,13 +19,13 @@ function select(item) {
 </script>
 
 <template>
-  <div class="w-full overflow-x-auto whitespace-nowrap no-scrollbar p-2">
+  <div class="w-full overflow-x-auto whitespace-nowrap no-scrollbar px-2 py-1">
     <div class="inline-flex gap-2">
       <button
         v-for="item in items"
         :key="item"
         @click="select(item)"
-        class="px-4 py-1 rounded-2xl text-xs font-medium border uppercase"
+        class="px-4 py-1 rounded-2xl text-[10px] font-medium border uppercase"
         :class="{
           'bg-accent text-white border-accent': item === modelValue,
           'bg-white text-accent border-accent': item !== modelValue,

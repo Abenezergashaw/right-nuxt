@@ -400,7 +400,7 @@ onMounted(refreshBalance);
       >
         <div class="bg-white shadow-lg w-full px-3 pt-2 relative text-black">
           <div
-            class="flex justify-between text-sm py-2 border-b-2 border-gray-300"
+            class="flex justify-between text-xs py-2 border-b-2 border-gray-300"
           >
             <span>Balance</span>
             <span
@@ -410,28 +410,28 @@ onMounted(refreshBalance);
           </div>
 
           <div
-            class="flex justify-between text-sm py-2 border-b-2 border-gray-300"
+            class="flex justify-between text-xs py-2 border-b-2 border-gray-300"
           >
             <span>Point</span>
             <span class="font-semibold">{{ auth.user.bBalance }}</span>
           </div>
 
           <div
-            class="flex justify-center py-2 border-b-2 border-gray-300 text-sm"
+            class="flex justify-center py-2 border-b-2 border-gray-300 text-xs"
           >
             <span>1 POINT = 1 ETB</span>
           </div>
 
           <div
             @click="refreshBalance"
-            class="flex justify-center bg-default text-white py-2 border-b-2 border-gray-300 mt-2 font-semibold text-sm"
+            class="flex justify-center bg-default text-white py-2 border-b-2 border-gray-300 mt-2 font-semibold text-xs"
           >
             REFRESH
           </div>
 
           <div
             @click="showBalanceModal = false"
-            class="flex justify-center py-2 mt-2 mb-4 font-semibold text-black text-sm"
+            class="flex justify-center py-2 mt-2 mb-4 font-semibold text-black text-xs"
           >
             CLOSE
           </div>

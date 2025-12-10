@@ -60,7 +60,6 @@ export const useAuthStore = defineStore("auth", {
           },
           { withCredentials: true }
         );
-        alert(JSON.stringify(res.data));
         if (!res.data.success) {
           this.loginError = res.data.message;
           return false;
