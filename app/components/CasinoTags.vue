@@ -25,7 +25,7 @@ function select(item) {
         v-for="item in items"
         :key="item"
         @click="select(item)"
-        class="px-4 py-2 rounded-2xl text-sm font-medium border uppercase"
+        class="px-4 py-1 rounded-2xl text-xs font-medium border uppercase"
         :class="{
           'bg-accent text-white border-accent': item === modelValue,
           'bg-white text-accent border-accent': item !== modelValue,

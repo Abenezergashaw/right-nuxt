@@ -2,6 +2,12 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@nuxtjs/i18n", "@nuxt/icon", "@pinia/nuxt"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxtjs/i18n",
+    "@nuxt/icon",
+    "@pinia/nuxt",
+    "@nuxtjs/google-fonts",
+  ],
   css: ["~/assets/css/main.css"],
 });

@@ -362,7 +362,12 @@ onMounted(refreshBalance);
             @click="showBalanceModal = true"
             class="flex flex-col items-end font-medium gap-1 text-xs"
           >
-            <span>{{ auth.user.bBalance + auth.user.rBalance }} ETB</span>
+            <span
+              >{{
+                (auth.user.bBalance + auth.user.rBalance).toFixed(2)
+              }}
+              ETB</span
+            >
             <span>ID: {{ auth.user.id }}</span>
           </div>
 
@@ -372,7 +377,6 @@ onMounted(refreshBalance);
             class="rounded-none px-2"
             color="neutral"
             variant="ghost"
-            size="xl"
             trailing-icon="i-heroicons-user-solid"
             @click="rightSidebarOpen = true"
           />
@@ -396,7 +400,7 @@ onMounted(refreshBalance);
       >
         <div class="bg-white shadow-lg w-full px-3 pt-2 relative text-black">
           <div
-            class="flex justify-between text-lg py-2 border-b-2 border-gray-300"
+            class="flex justify-between text-sm py-2 border-b-2 border-gray-300"
           >
             <span>Balance</span>
             <span
@@ -406,7 +410,7 @@ onMounted(refreshBalance);
           </div>
 
           <div
-            class="flex justify-between text-lg py-2 border-b-2 border-gray-300"
+            class="flex justify-between text-sm py-2 border-b-2 border-gray-300"
           >
             <span>Point</span>
             <span class="font-semibold">{{ auth.user.bBalance }}</span>
@@ -420,14 +424,14 @@ onMounted(refreshBalance);
 
           <div
             @click="refreshBalance"
-            class="flex justify-center bg-default text-white py-2 border-b-2 border-gray-300 mt-2 font-semibold"
+            class="flex justify-center bg-default text-white py-2 border-b-2 border-gray-300 mt-2 font-semibold text-sm"
           >
             REFRESH
           </div>
 
           <div
             @click="showBalanceModal = false"
-            class="flex justify-center py-2 mt-2 mb-4 font-semibold text-black"
+            class="flex justify-center py-2 mt-2 mb-4 font-semibold text-black text-sm"
           >
             CLOSE
           </div>

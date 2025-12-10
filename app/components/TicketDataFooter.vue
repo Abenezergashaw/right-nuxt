@@ -48,7 +48,7 @@ function handleToggleWithPoints() {
     :handle="false"
   >
     <div
-      class="flex justify-around items-center gap-6 text-xs py-3 tracking-wide relative cursor-pointer"
+      class="flex justify-around items-center gap-6 text-sm py-3 tracking-wide relative cursor-pointer"
       @click="drawerOpen = true"
     >
       <div class="text-white flex gap-1 font-bold">
@@ -58,7 +58,7 @@ function handleToggleWithPoints() {
       </div>
       <div
         v-if="tickets > 1"
-        class="text-white text-[16px] font-bold -translate-x-4"
+        class="text-white text-sm font-bold -translate-x-4"
       >
         <span>{{ t("Point") }}</span>
         <span class="text-amber-400"> {{ point }} % </span>

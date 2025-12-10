@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+html,
+body {
+  font-family: "Roboto", sans-serif;
+}
+
 :root {
   --ui-bg: #486333;
   --ui-bg-soft: oklch(98.4% 0.003 247.858);
