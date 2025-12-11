@@ -5,7 +5,7 @@ import { useUrl } from "@/stores/url";
 import { t } from "@/composables/locales";
 
 definePageMeta({
-  layout: "secondary",
+  layout: "tertiary",
 });
 
 const auth = useAuthStore();
@@ -63,83 +63,85 @@ onMounted(() => {
 </script>
 
 <template>
-  <UCard
-    class="w-full max-w-sm mt-6 rounded-none py-0 px-6 border-none mx-auto bg-default mb-48"
-  >
-    <div class="mb-4">
-      <h2 class="text-xl font-semibold uppercase">{{ t("Login") }}</h2>
-    </div>
-
-    <USeparator class="mb-4" color="primary" />
-
-    <form class="space-y-4 mt-0" @submit.prevent="submitForm">
-      <div class="text-sm">{{ t("Phone number, username or ID") }}</div>
-
-      <UInput
-        v-model="form.phone"
-        type="tel"
-        :placeholder="t('Phone number, username or ID')"
-        class="w-full bg-white rounded-none text-black"
-        :ui="{ base: 'bg-white text-black rounded-none' }"
-      />
-
-      <div class="text-sm">{{ t("Password") }}</div>
-
-      <UInput
-        v-model="form.password"
-        type="password"
-        :placeholder="t('Enter your password')"
-        class="w-full bg-white rounded-none"
-        :ui="{ base: 'bg-white text-black rounded-none' }"
-      />
-
-      <div class="flex justify-between items-center text-xs">
-        <div>{{ t("Remember me") }}</div>
-        <USwitch v-model="form.rememberMe" />
+  <div class="h-screen overflow-y-auto">
+    <UCard
+      class="w-full max-w-sm mt-6 rounded-none pb-4 px-6 border-none mx-auto bg-default"
+    >
+      <div class="mb-4">
+        <h2 class="text-lg font-semibold uppercase">{{ t("Login") }}</h2>
       </div>
 
-      <div
-        v-if="auth.loginError"
-        class="text-red-300 tracking-wider text-sm mt-2 text-center"
-      >
-        {{ auth.loginError }}
+      <USeparator class="mb-4" color="primary" />
+
+      <form class="space-y-4 mt-0" @submit.prevent="submitForm">
+        <div class="text-sm">{{ t("Phone number, username or ID") }}</div>
+
+        <UInput
+          v-model="form.phone"
+          type="tel"
+          :placeholder="t('Phone number, username or ID')"
+          class="w-full bg-white rounded-none text-black"
+          :ui="{ base: 'bg-white text-black rounded-none' }"
+        />
+
+        <div class="text-sm">{{ t("Password") }}</div>
+
+        <UInput
+          v-model="form.password"
+          type="password"
+          :placeholder="t('Enter your password')"
+          class="w-full bg-white rounded-none"
+          :ui="{ base: 'bg-white text-black rounded-none' }"
+        />
+
+        <div class="flex justify-between items-center text-xs">
+          <div>{{ t("Remember me") }}</div>
+          <USwitch v-model="form.rememberMe" />
+        </div>
+
+        <div
+          v-if="auth.loginError"
+          class="text-red-300 tracking-wider text-sm mt-2 text-center"
+        >
+          {{ auth.loginError }}
+        </div>
+
+        <UButton
+          type="submit"
+          color="primary"
+          block
+          class="mt-2 text-center uppercase"
+          :loading="loggingIn"
+          loading-icon="i-lucide-loader"
+        >
+          {{ t("Login") }}
+        </UButton>
+      </form>
+
+      <div class="text-xs text-center my-4 tracking-wider">
+        <RouterLink
+          to="/restore_password"
+          class="text-[#05DF72] cursor-pointer"
+          >{{ t("Restore password") }}</RouterLink
+        >
+        {{ t("or") }}
+        <span class="text-[#05DF72] cursor-pointer">{{ t("Contact us") }}</span>
+      </div>
+
+      <USeparator class="my-4" color="primary" />
+
+      <div class="text-xs text-center my-4 tracking-wider">
+        <span>{{ t("Don't have an account?") }}</span>
       </div>
 
       <UButton
-        type="submit"
         color="primary"
+        to="/auth/register"
         block
         class="mt-2 text-center uppercase"
-        :loading="loggingIn"
-        loading-icon="i-lucide-loader"
       >
-        {{ t("Login") }}
+        {{ t("Register") }}
       </UButton>
-    </form>
-
-    <div class="text-xs text-center my-4 tracking-wider">
-      <RouterLink
-        to="/restore_password"
-        class="text-[#05DF72] cursor-pointer"
-        >{{ t("Restore password") }}</RouterLink
-      >
-      {{ t("or") }}
-      <span class="text-[#05DF72] cursor-pointer">{{ t("Contact us") }}</span>
-    </div>
-
-    <USeparator class="my-4" color="primary" />
-
-    <div class="text-xs text-center my-4 tracking-wider">
-      <span>{{ t("Don't have an account?") }}</span>
-    </div>
-
-    <UButton
-      color="primary"
-      to="/auth/register"
-      block
-      class="mt-2 text-center uppercase"
-    >
-      {{ t("Register") }}
-    </UButton>
-  </UCard>
+    </UCard>
+  </div>
 </template>

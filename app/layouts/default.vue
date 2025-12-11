@@ -315,7 +315,7 @@ onMounted(refreshBalance);
 
     <!-- TOP BAR -->
     <div class="flex flex-col">
-      <div class="flex items-center justify-between p-2">
+      <div class="flex items-center justify-between p-1">
         <div class="flex items-center gap-2">
           <UButton
             class="rounded-none px-2"

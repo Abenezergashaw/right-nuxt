@@ -11,5 +11,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>Home</div>
+  <div class="h-screen overflow-y-auto"></div>
 </template>
