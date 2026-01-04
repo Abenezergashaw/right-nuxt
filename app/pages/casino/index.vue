@@ -81,22 +81,24 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ImageCarousel />
-  <CasinoTags :items="tags" v-model="activeTag" @select="onSelect" />
-  <ProvidersList
-    :items="providers"
-    v-model="activeProvider"
-    @select="onChangeProvider"
-  />
-  <GamesList :games="games" type="casino" />
-  <div class="flex justify-center">
-    <UButton
-      :loading="loadingGames"
-      loading-icon="i-heroicons-paper-airplane"
-      label="Load more"
-      @click="getGames"
-      class="my-2"
+  <div class="w-full md:w-[52%] mx-auto">
+    <ImageCarousel />
+    <CasinoTags :items="tags" v-model="activeTag" @select="onSelect" />
+    <ProvidersList
+      :items="providers"
+      v-model="activeProvider"
+      @select="onChangeProvider"
     />
+    <GamesList :games="games" type="casino" />
+    <div class="flex justify-center">
+      <UButton
+        :loading="loadingGames"
+        loading-icon="i-heroicons-paper-airplane"
+        label="Load more"
+        @click="getGames"
+        class="my-2"
+      />
+    </div>
   </div>
   <div class="w-full">
     <Loader :loader="loader" />

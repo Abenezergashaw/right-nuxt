@@ -138,7 +138,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-screen overflow-y-auto">
+  <div class="h-screen overflow-y-auto w-full md:w-[52%] mx-auto">
     <!-- Header -->
     <div
       class="h-14 bg-default px-6 uppercase text-lg tracking-wider flex items-center"

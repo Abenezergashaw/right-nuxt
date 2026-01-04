@@ -5,7 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="">
+  <div class="w-full md:w-[52%] mx-auto">
     <Rules />
   </div>
 </template>

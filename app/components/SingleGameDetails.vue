@@ -9,6 +9,8 @@ const props = defineProps({
   teams: String,
   eventId: String,
   ticketData: Array,
+  country: String,
+  competition: String,
 });
 
 // Precompute selected ref IDs for O(1) lookup
@@ -35,6 +37,10 @@ function emitSelection(p, m) {
     market_name: m.marketName,
     price_hcap: p.handicapValue,
     reference_id: p.referenceId,
+    eventId: p.eventId,
+    status: 0,
+    country: props.country,
+    competition: props.competition,
   };
 
   emit("betSelected", payload, props.eventId);

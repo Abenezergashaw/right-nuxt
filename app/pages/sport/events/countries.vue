@@ -94,7 +94,7 @@ onMounted(() => getGamesByCountry());
 
 <template>
   <Loader :loader="loader" />
-  <div class="h-screen overflow-auto">
+  <div class="h-screen overflow-auto w-full md:w-[52%] mx-auto px-4">
     <div
       class="py-5 w-full px-3 flex gap-2 justify-center items-center text-white bg-default"
     >

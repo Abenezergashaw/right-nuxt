@@ -40,7 +40,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="p-1 flex items-center justify-around md:flex-col gap-2 w-full relative"
+    class="p-1 flex items-center justify-around md:hidden gap-2 w-full relative"
   >
     <div
       class="absolute -top-5 left-1/2 transform -translate-x-1/2 w-28 h-14 rounded-t-full bg-[#486333]"

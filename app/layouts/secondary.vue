@@ -31,7 +31,8 @@ async function handleFastBetting() {
     stake: stake.value,
   });
   if (!res.data.error) {
-    fastBetCode.value = res.data[0].data.packageId;
+    fastBetCode.value = res.data.fastBetId;
+
     placingBet.value = false;
     fastBetModal.value = true;
   }
@@ -57,12 +58,13 @@ async function handlePlaceBetsOnline() {
     placingBetError.value = res.data.message;
     const errorBets =
       Array.isArray(res.data?.data) && res.data.data.length > 0
-        ? res.data.data[0].data?.bets || []
+        ? res.data.data || []
         : [];
     errorBets.forEach((s) => {
-      const t = ticketData.value.find((x) => x.reference_id === s.reference_id);
+      const t = ticket.ticket.find((x) => x.reference_id === s.reference_id);
       if (t) t.errors = s.errors;
     });
+
     return;
   }
 
@@ -86,6 +88,12 @@ async function handlePlaceBetsOnline() {
 function handleToggleWithPoints(val) {
   withPoints.value = !withPoints.value;
 }
+
+function copyFastBetCode() {
+  if (!fastBetCode.value) return;
+
+  navigator.clipboard.writeText(fastBetCode.value);
+}
 </script>
 
 <template>
@@ -96,7 +104,7 @@ function handleToggleWithPoints(val) {
       >
         <UButton
           class="absolute top-0 -right-5 text-gray-100 text-lg"
-          v-on:click="
+          @click="
             fastBetModal = false;
             fastBetCode = null;
           "
@@ -112,11 +120,27 @@ function handleToggleWithPoints(val) {
             class="w-20"
             alt=""
           />
+
           <span>Fast Bet Code</span>
-          <span class="text-2xl tracking-wide">{{ fastBetCode }}</span>
-          <span class="text-center">
-            This is Temporary Ticket, and you can use this ticket for placing
-            bet in any Right Shop.
+
+          <!-- CODE + COPY BUTTON -->
+          <div class="flex items-center gap-2">
+            <span class="text-2xl tracking-wide">
+              {{ fastBetCode }}
+            </span>
+
+            <UButton
+              icon="i-lucide-copy"
+              size="sm"
+              color="neutral"
+              variant="ghost"
+              @click="copyFastBetCode"
+            />
+          </div>
+
+          <span class="text-center text-sm">
+            This is a temporary ticket. You can use this code to place a bet in
+            any Right Shop.
           </span>
         </div>
       </div>
@@ -127,7 +151,7 @@ function handleToggleWithPoints(val) {
     <Default />
 
     <!-- Extra content only for this secondary layout -->
-    <Bbb />
+    <Bbb class="block md:hidden" />
 
     <!-- Page content -->
     <main class="flex-1 overflow-y-auto py-0 bg-gray-200">

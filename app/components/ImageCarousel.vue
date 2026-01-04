@@ -1,10 +1,5 @@
 <script setup lang="ts">
-const items = [
-  "https://fs.betunit.com/17634790516501001-multibet-bonus.jpg",
-  "https://fs.betunit.com/1763477638856Free%20bet%20banner.jpg",
-  "https://fs.betunit.com/1763477602954Weekly%20giveaway%20banner.jpg",
-  "https://fs.betunit.com/17634790735137-sport-cashback.jpg",
-];
+const items = ["/promo/1.jpg", "/promo/2.jpg", "/promo/3.jpg"];
 </script>
 
 <template>

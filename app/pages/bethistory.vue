@@ -33,6 +33,32 @@ const formattedDate = (d) => {
     .replace(",", "");
 };
 
+function calculateTotalOdd(ticket) {
+  return ticket.reduce((acc, bet) => acc * bet.odd, 1).toFixed(2);
+}
+
+function calculateTicketStatus(bets) {
+  let hasPending = false;
+  let hasWin = false;
+
+  for (const bet of bets) {
+    if (bet.status === 2) {
+      return "lose";
+    }
+    if (bet.status === 0) {
+      hasPending = true;
+    }
+    if (bet.status === 1) {
+      hasWin = true;
+    }
+  }
+
+  if (hasPending) return "pending";
+  if (hasWin) return "win";
+
+  return "pending";
+}
+
 async function goToBetHistory() {
   let filter = 1;
   if (betTimeFilter.value === "3 days") {
@@ -45,21 +71,36 @@ async function goToBetHistory() {
     filter = 30;
   }
 
-  const res = await axios.post(
-    `${url}/api/betHistory`,
-    {
-      timeFrame: filter,
-    },
+  const res = await axios.get(
+    `${url}/api/betHistory?days=${filter}`,
+
     {
       withCredentials: true,
     }
   );
-  betHistoryData.value = res.data;
+  betHistoryData.value = res.data.data;
+  console.log(res.data);
 }
 
 function handleGoBetDetail(id) {
   router.push(`/betinfo/${id}`);
 }
+
+const ticketsWithMeta = computed(() => {
+  if (!betHistoryData.value.length) return [];
+
+  return betHistoryData.value.map((ticket) => {
+    const totalOdd = calculateTotalOdd(ticket);
+    const status = calculateTicketStatus(ticket);
+
+    return {
+      ticket,
+      totalOdd,
+      status,
+      payout: status === "win" ? (totalOdd * ticket[0].stake).toFixed(2) : "",
+    };
+  });
+});
 
 onMounted(async () => {
   await goToBetHistory();
@@ -67,9 +108,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="relative h-screen overflow-y-auto">
+  <div
+    class="relative h-screen overflow-y-auto w-full md:w-[52%] md:min-w-[600px] px-4 mx-auto mt-2 rounded-t-md"
+  >
     <div
-      class="text-xs font-light underline absolute top-1 right-2 text-white opacity-80 tracking-wide"
+      class="text-xs font-light underline absolute top-1 right-6 text-white opacity-80 tracking-wide"
     >
       Clear history
     </div>
@@ -96,51 +139,45 @@ onMounted(async () => {
     </div>
 
     <div
-      v-if="betHistoryData.length > 0"
-      v-for="ticket in betHistoryData"
-      :key="ticket.id"
-      @click="handleGoBetDetail(ticket.id)"
+      v-for="item in betHistoryData"
+      :key="item.ticketId"
+      @click="handleGoBetDetail(item.ticketId)"
       class="bg-[#eaeaea] grid grid-cols-4 border-b-2 border-black text-black"
     >
+      <!-- TYPE -->
       <div class="py-2 flex flex-col items-start px-2 whitespace-nowrap">
-        <span class="font-semibold text-sm">{{
-          ticket.type === 0 ? "Single" : "AKO"
+        <span class="text-[9px] font-bold">{{ item.ticketId }}</span>
+
+        <span class="text-[11px] font-light">{{
+          formattedDate(item.date)
         }}</span>
-        <span class="text-[11px] font-light whitespace-nowrap">
-          {{ formattedDate(ticket.date) }}
+      </div>
+
+      <!-- STAKE / ODD -->
+      <div class="py-2 flex flex-col items-start px-2">
+        <span class="text-sm">{{ item.stake.toFixed(2) }}</span>
+        <span class="text-sm font-semibold text-[#486333]">
+          x {{ item.totalOdds.toFixed(2) }}
         </span>
       </div>
 
-      <div class="py-2 flex flex-col items-start px-2">
-        <span class="text-sm">{{ ticket.sum }}</span>
-        <span class="text-sm font-semibold text-[#486333] whitespace-nowrap"
-          >x {{ ticket.total_odds }}</span
-        >
-      </div>
-
+      <!-- PAYOUT -->
       <div
         class="text-center py-2 flex items-center justify-center font-semibold"
-        :class="`${
-          ticket.payout === '0.00' ? 'text-red-500' : 'text-green-500'
-        }`"
+        :class="item.status === 1 ? 'text-[#05CD00]' : ''"
       >
-        {{ ticket.payout ? ticket.payout : "" }}
+        {{ item.status === 1 ? (item.stake * item.totalOdds).toFixed(2) : "" }}
       </div>
 
+      <!-- STATUS ICON -->
       <div class="text-center py-2 flex justify-center items-center">
         <img
-          v-if="ticket.meta.ststatus === 0"
-          src="/icons/pending.svg"
+          :src="`/icons/${
+            item.status === 0 ? 'pending' : item.status === 1 ? 'win' : 'lose'
+          }.svg`"
           class="h-4 w-4"
-          alt=""
+          :alt="item.status"
         />
-        <img
-          v-else-if="ticket.meta.ststatus === 2"
-          src="/icons/win.svg"
-          class="h-4 w-4"
-          alt=""
-        />
-        <img v-else src="/icons/lose.svg" class="h-4 w-4" alt="" />
       </div>
     </div>
   </div>

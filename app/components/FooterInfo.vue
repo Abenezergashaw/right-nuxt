@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div class="bg-default">
+  <div class="bg-default block md:hidden">
     <div class="text-center font-bold text-sm py-2 mb-2 text-white">
       Bet Right Sport & Entertainment PLC
     </div>

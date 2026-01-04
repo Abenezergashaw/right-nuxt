@@ -97,7 +97,7 @@ function handleBetsClearing() {
         :loading="placingBet"
         loading-icon="i-lucide-loader"
         @click="!placingBet && $emit('fastBet')"
-        class="w-[40%] uppercase font-bold flex justify-center items-center bg-default !bg-default text-white"
+        class="w-[40%] md:hidden uppercase font-bold flex justify-center items-center bg-default !bg-default text-white"
       >
         {{ t("Place bet") }}
       </UButton>
@@ -106,7 +106,7 @@ function handleBetsClearing() {
         :loading="placingBet"
         loading-icon="i-lucide-loader"
         @click="!placingBet && $emit('placeBetsOnline')"
-        class="w-[50%] uppercase font-bold flex justify-center items-center bg-default !bg-default text-white"
+        class="w-[50%] md:w-full uppercase font-bold flex justify-center items-center bg-default !bg-default text-white"
       >
         {{ t("Place bet online") }}
       </UButton>

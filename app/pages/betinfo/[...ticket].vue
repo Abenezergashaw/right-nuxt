@@ -17,15 +17,17 @@ async function handleCheckTicket() {
   checkTicketData.value = null;
   checkTicketError.value = null;
   if (checkTicketId.value !== null) {
-    const res = await axios.post(`${url}/api/checkTicket`, {
-      id: checkTicketId.value,
+    const res = await axios.post(`${url}/api/checkTicketId`, {
+      ticketId: checkTicketId.value,
     });
-    if (res.data[0].error) {
-      checkTicketError.value = res.data[0].message;
+
+    console.log(res.data);
+
+    if (res.data.error) {
+      checkTicketError.value = res.data.message;
       return;
     }
-    checkTicketData.value = res.data[0].data;
-    console.log(checkTicketData.value);
+    checkTicketData.value = res.data;
   }
 }
 
@@ -39,8 +41,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="h-screen overflow-y-auto">
-    <div class="py-3 px-2 uppercase font-semibold bg-default text-white">
+  <div class="h-screen overflow-y-auto max-w-2xl mx-auto">
+    <div
+      class="md:mt-3 md:rounded-t-lg py-3 px-2 uppercase font-semibold bg-default text-white"
+    >
       bet details
     </div>
     <div class="bg-[#ededed] pt-3 pb-1 px-2 border-0">

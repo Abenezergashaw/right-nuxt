@@ -81,7 +81,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="h-screen overscroll-y-auto">
+  <div class="h-screen overscroll-y-auto w-full md:w-[52%] mx-auto">
     <ImageCarousel />
     <CasinoTags :items="tags" v-model="activeTag" @select="onSelect" />
     <ProvidersList

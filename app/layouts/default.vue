@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { t } from "@/composables/locales";
+import { t, currentLang } from "@/composables/locales";
 
 const auth = useAuthStore();
 const router = useRouter();
@@ -10,6 +10,53 @@ const isLoggedIn = computed(() => auth.loggedIn);
 const sidebarOpen = ref(false);
 const rightSidebarOpen = ref(false);
 const showBalanceModal = ref(false);
+
+const container = ref(null);
+
+const open = ref(false);
+const languages = [
+  {
+    code: "et",
+    label: "AM",
+    value: "am",
+    avatar: {
+      src: `/flags/et.png`,
+      alt: "benjamincanac",
+    },
+  },
+  {
+    code: "gb",
+    label: "EN",
+    value: "en",
+    avatar: {
+      src: `/flags/gb.png`,
+      alt: "benjamincanac",
+    },
+  },
+  {
+    code: "orf",
+    label: "OM",
+    value: "om",
+    avatar: {
+      src: `/flags/orf.png`,
+      alt: "benjamincanac",
+    },
+  },
+  {
+    code: "tgr",
+    label: "TG",
+    value: "tg",
+    avatar: {
+      src: `/flags/tgr.png`,
+      alt: "benjamincanac",
+    },
+  },
+];
+
+function selectLang(code) {
+  open.value = false;
+  currentLang.value = code;
+}
 
 // submenu toggles
 const showSportsSubmenu = ref(false);
@@ -24,9 +71,9 @@ const sportsSubmenu = [
 ];
 
 const menuItems = [
-  { label: "Live", icon: "i-heroicons-video-camera", to: "/" },
+  //{ label: "Live", icon: "i-heroicons-video-camera", to: "/" },
   { label: "Games", icon: "i-heroicons-puzzle-piece", to: "/casino" },
-  { label: "Live Games", icon: "i-heroicons-bolt", to: "/casino" },
+  // { label: "Live Games", icon: "i-heroicons-bolt", to: "/casino" },
   {
     label: "Virtual Sport",
     icon: "i-heroicons-computer-desktop",
@@ -36,6 +83,13 @@ const menuItems = [
   { label: "Check Ticket", icon: "i-heroicons-ticket", to: "/betinfo/" },
   { label: "Rules", icon: "i-heroicons-document", to: "/retail_betting" },
 ];
+
+const desktopMenuItems = [
+  { label: "Home", icon: "i-heroicons-video-camera", to: "/home/upcoming" },
+  ...menuItems,
+];
+
+const activeDesktopMenu = "Home";
 
 const rightMenu = [
   { label: "Messages", to: "/notification", icon: "i-heroicons-envelope" },
@@ -67,12 +121,15 @@ async function handleLogout() {
   router.push("/home/upcoming");
 }
 
-onMounted(refreshBalance);
+onMounted(() => {
+  refreshBalance();
+});
+
+onBeforeUnmount(() => {});
 </script>
 
 <template>
   <UApp>
-    <!-- LEFT DRAWER -->
     <UDrawer
       v-model:open="sidebarOpen"
       :handle="false"
@@ -315,23 +372,23 @@ onMounted(refreshBalance);
 
     <!-- TOP BAR -->
     <div class="flex flex-col">
-      <div class="flex items-center justify-between p-1">
+      <div class="flex items-center justify-between p-1 md:p-3">
         <div class="flex items-center gap-2">
           <UButton
-            class="rounded-none px-2"
+            class="rounded-none px-2 block md:hidden"
             color="neutral"
             variant="ghost"
             size="xl"
             trailing-icon="i-heroicons-bars-3"
             @click="sidebarOpen = true"
           />
-          <USeparator orientation="vertical" color="primary" class="h-8" />
+          <USeparator
+            orientation="vertical"
+            color="primary"
+            class="h-8 block md:hidden"
+          />
 
-          <RouterLink to="/home/upcoming">
-            <!-- <img
-              src="https://arada.bet/files/webexIconsMobile/image/header/Vamos-logo-mobile-white-new.svg"
-              class="w-12"
-            /> -->
+          <RouterLink to="/home/upcoming" class="flex gap-2 items-center">
             <svg
               width="32"
               height="32"
@@ -348,6 +405,24 @@ onMounted(refreshBalance);
                 stroke-linejoin="round"
               />
             </svg>
+            <svg
+              width="100"
+              height="20"
+              viewBox="0 0 100 20"
+              xmlns="http://www.w3.org/2000/svg"
+              class="hidden md:block"
+            >
+              <text
+                x="0"
+                y="15"
+                font-size="15"
+                font-family="Arial, sans-serif"
+                fill="#fff"
+                class="tracking-wider font-bold"
+              >
+                rightbet
+              </text>
+            </svg>
           </RouterLink>
         </div>
 
@@ -355,6 +430,13 @@ onMounted(refreshBalance);
         <div v-if="!isLoggedIn" class="flex gap-2">
           <AuthButtons title="Login" to="/auth/login" />
           <AuthButtons title="Register" to="/auth/register" />
+          <USelect
+            v-model="currentLang"
+            :items="languages"
+            :avatar="avatar"
+            size="md"
+            class="text-white text-sm"
+          />
         </div>
 
         <div v-else class="flex gap-2">
@@ -374,18 +456,39 @@ onMounted(refreshBalance);
           <AuthButtons title="Deposit" to="/payment/deposit" />
 
           <UButton
-            class="rounded-none px-2"
+            class="rounded-none px-2 block md:hidden"
             color="neutral"
             variant="ghost"
             trailing-icon="i-heroicons-user-solid"
             @click="rightSidebarOpen = true"
           />
+          <UButton
+            class="rounded-none hidden md:block px-2 cursor-pointer hover:bg-default hover:opacity-80"
+            color="neutral"
+            variant="ghost"
+            trailing-icon="i-heroicons-user-solid"
+            @click="router.push('/bethistory')"
+          />
         </div>
       </div>
 
-      <USeparator color="primary" />
+      <div
+        class="h-12 bg-gray-50 w-full hidden md:flex justify-center items-center border-b-2"
+      >
+        <RouterLink
+          v-for="items in desktopMenuItems"
+          :key="items.label"
+          :to="items.to"
+          class="text-black uppercase text-sm px-4 cursor-pointer hover:bg-default hover:text-white h-full flex justify-center items-center"
+          active-class="bg-default text-white"
+        >
+          {{ items.label }}
+        </RouterLink>
+      </div>
 
-      <main class="flex-1 py-0">
+      <!-- <USeparator color="primary" /> -->
+
+      <main class="flex-1 flex py-0">
         <UContainer>
           <slot />
         </UContainer>
@@ -396,7 +499,7 @@ onMounted(refreshBalance);
     <Teleport to="body">
       <div
         v-if="showBalanceModal"
-        class="fixed inset-0 bg-black/40 flex mt-14 items-start justify-center z-20"
+        class="md:hidden fixed inset-0 bg-black/40 flex mt-14 items-start justify-center z-20"
       >
         <div class="bg-white shadow-lg w-full px-3 pt-2 relative text-black">
           <div

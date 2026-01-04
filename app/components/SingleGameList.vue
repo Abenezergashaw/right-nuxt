@@ -4,6 +4,7 @@ import { useCountryFlag } from "@/composables/useFlags";
 import { t } from "@/composables/locales";
 
 const { getFlag } = useCountryFlag();
+const ticket = useTicket();
 
 const props = defineProps({
   game: Object,
@@ -50,6 +51,11 @@ function selectBet(price) {
     market_name: market.value.marketName,
     price_hcap: price.handicapValue,
     reference_id: price.referenceId,
+    eventId: price.eventId,
+    status: 0,
+    startTime: props.game.events[0].eventStartTime,
+    country: props.game.country,
+    competition: props.game.competitionName,
   };
 
   emit("betSelected", data, "0");

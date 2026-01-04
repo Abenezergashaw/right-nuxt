@@ -46,6 +46,7 @@ function handleToggleWithPoints() {
     should-scale-background
     set-background-color-on-scale
     :handle="false"
+    class="md:hidden"
   >
     <div
       class="flex justify-around items-center gap-6 text-sm py-3 tracking-wide relative cursor-pointer"
