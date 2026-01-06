@@ -36,7 +36,7 @@ function checkTicket() {
 }
 
 onMounted(async () => {
-  // await handleCheckTicket();
+  await handleCheckTicket();
 });
 </script>
 
