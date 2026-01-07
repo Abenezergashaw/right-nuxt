@@ -88,6 +88,10 @@ const getImageSource = (status) => {
       :key="b.id"
       class="relative bg-white py-2 px-2 border-b-2 border-gray-500"
     >
+      <span class="absolute top-2 right-4 text-[11px]">{{
+        new Date(b.date).toLocaleString()
+      }}</span>
+
       <div class="flex flex-col font-semibold uppercase text-[12px]">
         <span>{{ b.teams.split(/ v /i)[0] }}</span>
         <span>{{ b.teams.split(/ v /i)[1] }}</span>
@@ -103,7 +107,9 @@ const getImageSource = (status) => {
         </div>
 
         <div class="flex-1">
-          <span>Competition Name</span>
+          <span>{{ b.country }} </span>
+          <span> - </span>
+          <span>{{ b.tournament }} </span>
         </div>
 
         <div class="flex items-center gap-1 font-bold text-[#486333]">
