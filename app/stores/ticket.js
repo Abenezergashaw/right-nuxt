@@ -276,6 +276,8 @@ export const useTicket = defineStore("ticket", {
     <html>
     <head>
       <title>Right Bet</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
       <style>
       @page {
         size: 80mm auto;
@@ -306,6 +308,8 @@ export const useTicket = defineStore("ticket", {
           border: 1px solid #000;
           margin-bottom: 8px;
           padding: 6px;
+          display:flex;
+          justify-content: space-between;
         }
           .bets{
           font-weight: bold;}
@@ -360,6 +364,8 @@ export const useTicket = defineStore("ticket", {
       <div class="ticket">
         <div class="header">
           <h3>Right Bet</h3>
+  <div id="qrcode"></div>
+
         </div>
 
         <div class="info">
@@ -433,6 +439,12 @@ export const useTicket = defineStore("ticket", {
       </div>
 
       <script>
+      new QRCode(document.getElementById("qrcode"), {
+        text: "https://rightbet.org/api/scanTicket?id=${ticketNumber}",
+        width: 60,
+        height: 50,
+        correctLevel: QRCode.CorrectLevel.H,
+      });
         window.onload = function () {
           window.print();
           window.onafterprint = () => window.close();
