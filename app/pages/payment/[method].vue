@@ -10,7 +10,7 @@ const router = useRouter();
 const auth = useAuthStore();
 const url = useUrl().url;
 
-const phoneNumber = ref(auth.user.phone);
+const phoneNumber = ref(auth.user?.phone);
 const amount = ref(100);
 
 const showTelebirrDeposit = ref(false);
@@ -21,13 +21,21 @@ const showTelebirrWithdraw = ref(false);
 const showCbebirrWithdraw = ref(false);
 const withdrawMethod = ref("telebirr");
 const withdrawAmount = ref("");
-const withdrawPhone = ref(auth.user.phone);
+const withdrawPhone = ref(auth.user?.phone);
 const successfulCbebirrWithdrawal = ref(false);
 const successfulTelebirrWithdrawal = ref(false);
 const withdrawTransactionId = ref(null);
 
 const depositLoader = ref(false);
 const withdrawLoader = ref(false);
+
+const showManualTelebirrDeposit = ref(false);
+const maualDepositPhone = ref(auth.user?.phone);
+const manualDepositLoader = ref(false);
+const manualDepositReference = ref("");
+const manualInformationStatus = ref(false);
+
+const showManualTelebirrWithdraw = ref(false);
 
 // tabs config
 const tabs = [
@@ -124,6 +132,35 @@ async function handleWithdraw(method, e) {
       successfulCbebirrWithdrawal.value = false;
     }
   }, 10000);
+}
+
+async function handleManualDeposit(e) {
+  e.preventDefault();
+  try {
+    manualDepositLoader.value = true;
+    const res = await axios.post(
+      `${url}/api/manualDeposit`,
+      {
+        reference: manualDepositReference.value,
+        phone: maualDepositPhone.value,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (!res.data.error) {
+      manualDepositLoader.value = false;
+      alert(res.data.message);
+      const ok = auth.checkSession();
+    } else {
+      manualDepositLoader.value = false;
+      alert(res.data.message);
+    }
+  } catch (error) {
+    manualDepositLoader.value = false;
+    console.log("Manual deposit failed: ", error);
+  }
 }
 
 const loadingHistory = ref(true);
@@ -333,6 +370,115 @@ onMounted(() => {
             </form>
           </div>
         </div>
+
+        <!-- Manual telebirr deposit  -->
+        <div
+          @click="manualInformationStatus = !manualInformationStatus"
+          class="py-4 px-2 text-center text-black flex items-center gap-2 justify-center"
+        >
+          Manual Deposit
+          <Icon
+            :name="
+              manualInformationStatus
+                ? 'heroicons-chevron-up'
+                : 'heroicons-chevron-down'
+            "
+          />
+        </div>
+
+        <div
+          v-if="manualInformationStatus"
+          class="flex flex-col text-black justify-center px-2 items-center"
+        >
+          <p>1. መጀመሪያ ወደ 0956457051 ቴሌብር ያስትላልፉ።</p>
+          <p>
+            2. የላካችሁበትን ስልክ ቁጥር እና ከቴሌብር ከተላከላችሁ ሜሴጅ ላይ
+            <strong>‹ transaction number ›</strong> ሚለውን አስገብተው
+            <strong> Deposit </strong> ሚለውን ይጫኑ።
+          </p>
+        </div>
+
+        <div>
+          <div
+            @click="
+              showManualTelebirrDeposit = !showManualTelebirrDeposit;
+              depositMethod = 'telebirr';
+            "
+            class="bg-white flex justify-between items-center p-2 text-black"
+          >
+            <img src="/icons/teleBirr.svg" class="h-8 w-24" alt="" />
+            <Icon
+              :name="
+                showManualTelebirrDeposit
+                  ? 'heroicons-chevron-up'
+                  : 'heroicons-chevron-down'
+              "
+            />
+          </div>
+
+          <div
+            v-if="showManualTelebirrDeposit"
+            class="relative bg-white flex flex-col justify-between items-center p-2 text-black"
+          >
+            <form
+              class="space-y-4 mt-0 pb-4"
+              @submit="handleManualDeposit($event)"
+            >
+              <div class="text-xs">{{ t("Phone number") }}</div>
+
+              <div>
+                <UInput
+                  label="Phone Number"
+                  type="tel"
+                  placeholder="+251"
+                  class="w-[20%] bg-white rounded-none"
+                  size="xl"
+                  disabled
+                  :ui="{
+                    base: 'bg-white rounded-none',
+                  }"
+                />
+                <UInput
+                  label="Phone Number"
+                  type="tel"
+                  v-model="maualDepositPhone"
+                  :placeholder="t('Phone number')"
+                  class="w-[80%] bg-white rounded-none text-black"
+                  size="xl"
+                  :ui="{
+                    base: 'bg-white rounded-none text-black',
+                  }"
+                />
+              </div>
+
+              <div class="text-xs">{{ t("Reference Code") }}</div>
+
+              <UInput
+                label="Reference Code"
+                type="text"
+                v-model="manualDepositReference"
+                placeholder="Reference Code"
+                class="w-full bg-white rounded-none"
+                size="xl"
+                :ui="{
+                  base: 'bg-white rounded-none text-black',
+                }"
+              />
+
+              <UButton
+                type="submit"
+                color="primary"
+                block
+                :loading="manualDepositLoader"
+                loading-icon="i-lucide-loader"
+                class="mt-1 text-center uppercase"
+                size="xl"
+              >
+                {{ t(active) }}
+              </UButton>
+            </form>
+          </div>
+        </div>
       </div>
 
       <div v-else-if="active === 'withdraw'" class="flex flex-col gap-2">
@@ -424,7 +570,7 @@ onMounted(() => {
           </div>
 
           <div
-            v-if="successfulTelebirrWithdrawal"
+            v-if="false"
             class="text-black pb-4 flex flex-col gap-1 mt-0 px-4 bg-white"
           >
             <span class="font-bold text-sm"
@@ -535,6 +681,123 @@ onMounted(() => {
 
           <div
             v-if="successfulCbebirrWithdrawal"
+            class="text-black pb-4 flex flex-col gap-1 mt-0 px-4 bg-white"
+          >
+            <span class="font-bold text-sm"
+              >We will transfer {{ withdrawAmount }} ETB to your wallet as
+              :</span
+            >
+            <span class="font-bold text-sm">1x{{ withdrawAmount }} ETB </span
+            ><span class="font-bold text-sm"
+              >Total: {{ withdrawAmount }} ETB
+            </span>
+            <span class="text-xs font-light">Order Accepted</span>
+            <span class="text-xs font-light"
+              >Our managers will review your order soon.</span
+            >
+            <span class="text-xs font-light"
+              >You can track the status of your order with a transaction code:
+              {{ withdrawTransactionId }}.</span
+            >
+          </div>
+        </div>
+
+        <!-- Manual telebirr withdraw  -->
+        <div
+          class="py-4 px-2 text-center text-black flex items-center gap-2 justify-center"
+        >
+          Manual WIthdraw
+        </div>
+
+        <div>
+          <div
+            @click="
+              showManualTelebirrWithdraw = !showManualTelebirrWithdraw;
+              withdrawMethod = 'telebirr';
+            "
+            class="bg-white flex justify-between items-center p-2 text-black"
+          >
+            <img src="/icons/teleBirr.svg" class="h-8 w-24" alt="" />
+            <Icon
+              :name="
+                showManualTelebirrWithdraw
+                  ? 'heroicons-chevron-up'
+                  : 'heroicons-chevron-down'
+              "
+            />
+          </div>
+
+          <div
+            v-if="showManualTelebirrWithdraw && !successfulTelebirrWithdrawal"
+            class="relative bg-white flex flex-col justify-between items-center p-2 text-black"
+          >
+            <div
+              class="text-[11px] block right-1 justify-end text-end text-[#486333] opacity-75 w-full"
+            >
+              Your Accessible Withdraw Amount (AWA) is {{ auth.rBalance }} ETB
+            </div>
+            <form
+              class="space-y-4 mt-0 pb-4"
+              @submit="handleWithdraw(1, $event)"
+            >
+              <div class="text-xs">{{ t("Phone number") }}</div>
+
+              <div>
+                <UInput
+                  label="Phone Number"
+                  type="tel"
+                  placeholder="+251"
+                  class="w-[20%] bg-white rounded-none"
+                  size="xl"
+                  disabled
+                  :ui="{
+                    base: 'bg-white rounded-none',
+                  }"
+                />
+                <UInput
+                  label="Phone Number"
+                  type="tel"
+                  v-model="withdrawPhone"
+                  disabled=""
+                  :placeholder="t('Phone number')"
+                  class="w-[80%] bg-white rounded-none text-black"
+                  size="xl"
+                  :ui="{
+                    base: 'bg-white rounded-none text-black',
+                  }"
+                />
+              </div>
+
+              <div class="text-xs">{{ t("Amount") }}</div>
+
+              <UInput
+                label="Amount"
+                type="number"
+                v-model="withdrawAmount"
+                :placeholder="t('Amount')"
+                class="w-full bg-white rounded-none"
+                size="xl"
+                :ui="{
+                  base: 'bg-white rounded-none text-black',
+                }"
+              />
+
+              <UButton
+                type="submit"
+                color="primary"
+                block
+                :loading="withdrawLoader"
+                loading-icon="i-lucide-loader"
+                class="mt-1 text-center uppercase"
+                size="xl"
+              >
+                {{ t(active) }}
+              </UButton>
+            </form>
+          </div>
+
+          <div
+            v-if="successfulTelebirrWithdrawal"
             class="text-black pb-4 flex flex-col gap-1 mt-0 px-4 bg-white"
           >
             <span class="font-bold text-sm"

@@ -51,6 +51,8 @@ async function submitForm() {
 
   const ok = await auth.submitLogin(form);
   // alert(ok);
+  loggingIn.value = false;
+
   if (!ok) return;
   router.push("/home/upcoming");
 }
