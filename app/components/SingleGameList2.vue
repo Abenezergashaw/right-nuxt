@@ -58,6 +58,7 @@ function selectBet(price) {
     startTime: props.game.events[0].eventStartTime,
     country: props.game.country,
     competition: props.game.competitionName,
+    sportId: event.value.sportId,
   };
 
   emit("betSelected", data, "0");

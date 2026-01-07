@@ -258,7 +258,7 @@ function handleOpenCloseMarket(index) {
 }
 
 function passBetSelection(bet) {
-  const t = { ...bet, startTime: eventStartTime.value };
+  const t = { ...bet, startTime: eventStartTime.value, sportId };
   ticket.manageSelectedBet(t);
 }
 

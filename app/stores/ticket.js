@@ -174,6 +174,7 @@ export const useTicket = defineStore("ticket", {
     manageSelectedBet(bet) {
       const ref = bet.reference_id;
 
+      if (bet.sportId !== "501") return;
       const exactIndex = this.ticket.findIndex((b) => b.reference_id === ref);
       if (exactIndex !== -1) {
         this.ticket.splice(exactIndex, 1);
@@ -191,7 +192,7 @@ export const useTicket = defineStore("ticket", {
       } else {
         this.ticket.push(bet);
       }
-      // console.log(this.ticket);
+      console.log(this.ticket);
       // this.ticket.map((t) =>
       //   console.log(
       //     "Name: ",

@@ -157,6 +157,9 @@ async function handleManualDeposit(e) {
       manualDepositLoader.value = false;
       alert(res.data.message);
     }
+
+    maualDepositPhone.value = ''
+    manualDepositReference.value = ''
   } catch (error) {
     manualDepositLoader.value = false;
     console.log("Manual deposit failed: ", error);

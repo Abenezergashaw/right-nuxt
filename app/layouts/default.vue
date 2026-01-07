@@ -72,8 +72,8 @@ const sportsSubmenu = [
 
 const menuItems = [
   //{ label: "Live", icon: "i-heroicons-video-camera", to: "/" },
+  { label: "Sport", icon: "i-heroicons-bolt", to: "/sport/events/countries" },
   { label: "Games", icon: "i-heroicons-puzzle-piece", to: "/casino" },
-  // { label: "Live Games", icon: "i-heroicons-bolt", to: "/casino" },
   {
     label: "Virtual Sport",
     icon: "i-heroicons-computer-desktop",
