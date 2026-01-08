@@ -311,6 +311,7 @@ export const useTicket = defineStore("ticket", {
           padding: 6px;
           display:flex;
           justify-content: space-between;
+          align-items: center;
         }
           .bets{
           font-weight: bold;}
@@ -356,16 +357,20 @@ export const useTicket = defineStore("ticket", {
           font-weight: bold;
           }
           .feed {
-  height: mm;
-}
+            height: mm;
+          }
 
       </style>
     </head>
     <body>
       <div class="ticket">
         <div class="header">
-          <h3>Right Bet</h3>
-  <div id="qrcode"></div>
+          <img src="/promo/logo.jpg" style="height:50px" />
+        <div id="qrcode"></div>
+        <img
+          src="https://quickchart.io/qr?text=https://rightbet.org/api/scanTicket?id=${ticketNumber}&format=png"
+          style="width:50px;height:50px"
+        />
 
         </div>
 
@@ -432,20 +437,15 @@ export const useTicket = defineStore("ticket", {
         ">
           ------
         </div>
-
-       
-
-
-
       </div>
 
       <script>
-      new QRCode(document.getElementById("qrcode"), {
-        text: "https://rightbet.org/api/scanTicket?id=${ticketNumber}",
-        width: 60,
-        height: 50,
-        correctLevel: QRCode.CorrectLevel.H,
-      });
+        // new QRCode(document.getElementById("qrcode"), {
+        //   text: "https://rightbet.org/api/scanTicket?id=${ticketNumber}",
+        //   width: 60,
+        //   height: 60,
+        //   correctLevel: QRCode.CorrectLevel.H,
+        // });
         window.onload = function () {
           window.print();
           window.onafterprint = () => window.close();
