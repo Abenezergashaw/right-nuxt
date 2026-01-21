@@ -192,17 +192,17 @@ export const useTicket = defineStore("ticket", {
       } else {
         this.ticket.push(bet);
       }
-      console.log(this.ticket);
-      // this.ticket.map((t) =>
-      //   console.log(
-      //     "Name: ",
-      //     t.market_name,
-      //     "price hcap: ",
-      //     t.price_hcap,
-      //     "price name: ",
-      //     t.price_name
-      //   )
-      // );
+      // console.log(this.ticket);
+      this.ticket.map((t) =>
+        console.log(
+          "Name: ",
+          t.market_name,
+          "price name: ",
+          t.price_name,
+          "price hcap: ",
+          t.price_hcap
+        )
+      );
 
       this.saveToStorage();
     },
